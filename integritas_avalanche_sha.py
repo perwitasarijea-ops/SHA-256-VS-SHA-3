@@ -111,10 +111,7 @@ root.geometry("1100x720")
 root.configure(bg="#F8FAFC")
 root.resizable(True, True)
 
-
-# =========================
 # SCROLL AREA
-# =========================
 canvas = tk.Canvas(root, bg="#F8FAFC", highlightthickness=0)
 scrollbar = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
 
@@ -153,9 +150,7 @@ def on_mousewheel(event):
 canvas.bind_all("<MouseWheel>", on_mousewheel)
 
 
-# =========================
 # HEADER
-# =========================
 header = tk.Frame(scrollable_frame, bg="#0F172A", height=100)
 header.pack(fill="x")
 
@@ -177,17 +172,11 @@ subjudul = tk.Label(
 )
 subjudul.pack()
 
-
-# =========================
 # MAIN CONTAINER
-# =========================
 container = tk.Frame(scrollable_frame, bg="#F8FAFC")
 container.pack(fill="both", expand=True, padx=40, pady=25)
 
-
-# =========================
 # FILE SELECTION CARD
-# =========================
 file_card = tk.Frame(
     container,
     bg="white",
@@ -272,9 +261,7 @@ btn_analisis = tk.Button(
 btn_analisis.pack(anchor="w", padx=20, pady=(0, 18))
 
 
-# =========================
 # RESULT HASH CARDS
-# =========================
 compare_frame = tk.Frame(container, bg="#F8FAFC")
 compare_frame.pack(fill="both", expand=True)
 
@@ -376,10 +363,7 @@ text_sha3_asli, text_sha3_modif, label_avalanche_sha3 = buat_card(
     "SHA3-256"
 )
 
-
-# =========================
 # FINAL RESULT CARD
-# =========================
 result_card = tk.Frame(
     container,
     bg="white",

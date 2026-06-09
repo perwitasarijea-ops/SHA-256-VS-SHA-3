@@ -87,10 +87,7 @@ root.minsize(900, 600)
 root.configure(bg="#F8FAFC")
 root.resizable(True, True)
 
-
-# =========================
 # SCROLL AREA
-# =========================
 canvas = tk.Canvas(root, bg="#F8FAFC", highlightthickness=0)
 scrollbar = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
 
@@ -126,10 +123,7 @@ def on_mousewheel(event):
 
 canvas.bind_all("<MouseWheel>", on_mousewheel)
 
-
-# =========================
 # HEADER
-# =========================
 header = tk.Frame(scrollable_frame, bg="#0F172A", height=100)
 header.pack(fill="x")
 
@@ -151,17 +145,11 @@ subjudul = tk.Label(
 )
 subjudul.pack()
 
-
-# =========================
 # MAIN CONTAINER
-# =========================
 container = tk.Frame(scrollable_frame, bg="#F8FAFC")
 container.pack(fill="both", expand=True, padx=40, pady=25)
 
-
-# =========================
 # BUTTON
-# =========================
 btn_pilih = tk.Button(
     container,
     text="Select File",
@@ -177,10 +165,7 @@ btn_pilih = tk.Button(
 )
 btn_pilih.pack(pady=(0, 20))
 
-
-# =========================
 # FILE INFO CARD
-# =========================
 info_card = tk.Frame(
     container,
     bg="white",
@@ -236,10 +221,7 @@ label_ukuran = tk.Label(
 )
 label_ukuran.pack(anchor="w", padx=20, pady=(0, 15))
 
-
-# =========================
 # COMPARISON FRAME
-# =========================
 compare_frame = tk.Frame(container, bg="#F8FAFC")
 compare_frame.pack(fill="both", expand=True)
 
@@ -310,10 +292,7 @@ def buat_hash_card(parent, title):
 label_waktu_sha256, text_sha256 = buat_hash_card(compare_frame, "SHA-256")
 label_waktu_sha3, text_sha3 = buat_hash_card(compare_frame, "SHA3-256")
 
-
-# =========================
 # RESULT CARD
-# =========================
 result_card = tk.Frame(
     container,
     bg="white",
