@@ -29,6 +29,13 @@ def hitung_hash(file_path, algoritma):
     return hasher.hexdigest(), selesai - mulai
 
 
+def isi_text(widget, value):
+    widget.config(state="normal")
+    widget.delete("1.0", tk.END)
+    widget.insert(tk.END, value)
+    widget.config(state="disabled")
+
+
 def pilih_file():
     file_path = filedialog.askopenfilename(
         title="Pilih File",
@@ -55,15 +62,8 @@ def pilih_file():
         label_waktu_sha256.config(text=f"{waktu_sha256:.8f} detik")
         label_waktu_sha3.config(text=f"{waktu_sha3:.8f} detik")
 
-        text_sha256.config(state="normal")
-        text_sha256.delete("1.0", tk.END)
-        text_sha256.insert(tk.END, hash_sha256)
-        text_sha256.config(state="disabled")
-
-        text_sha3.config(state="normal")
-        text_sha3.delete("1.0", tk.END)
-        text_sha3.insert(tk.END, hash_sha3)
-        text_sha3.config(state="disabled")
+        isi_text(text_sha256, hash_sha256)
+        isi_text(text_sha3, hash_sha3)
 
         if waktu_sha256 < waktu_sha3:
             selisih = waktu_sha3 - waktu_sha256
@@ -82,13 +82,55 @@ def pilih_file():
 
 root = tk.Tk()
 root.title("SHA-256 vs SHA3-256 Comparison")
-root.geometry("1000x720")
+root.geometry("1050x720")
+root.minsize(900, 600)
 root.configure(bg="#F8FAFC")
-root.resizable(False, False)
+root.resizable(True, True)
 
 
+# =========================
+# SCROLL AREA
+# =========================
+canvas = tk.Canvas(root, bg="#F8FAFC", highlightthickness=0)
+scrollbar = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
+
+scrollable_frame = tk.Frame(canvas, bg="#F8FAFC")
+
+scrollable_frame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+
+canvas_window = canvas.create_window(
+    (0, 0),
+    window=scrollable_frame,
+    anchor="nw"
+)
+
+canvas.configure(yscrollcommand=scrollbar.set)
+
+canvas.pack(side="left", fill="both", expand=True)
+scrollbar.pack(side="right", fill="y")
+
+
+def resize_scrollable_frame(event):
+    canvas.itemconfig(canvas_window, width=event.width)
+
+
+canvas.bind("<Configure>", resize_scrollable_frame)
+
+
+def on_mousewheel(event):
+    canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+
+canvas.bind_all("<MouseWheel>", on_mousewheel)
+
+
+# =========================
 # HEADER
-header = tk.Frame(root, bg="#0F172A", height=100)
+# =========================
+header = tk.Frame(scrollable_frame, bg="#0F172A", height=100)
 header.pack(fill="x")
 
 judul = tk.Label(
@@ -110,12 +152,16 @@ subjudul = tk.Label(
 subjudul.pack()
 
 
+# =========================
 # MAIN CONTAINER
-container = tk.Frame(root, bg="#F8FAFC")
+# =========================
+container = tk.Frame(scrollable_frame, bg="#F8FAFC")
 container.pack(fill="both", expand=True, padx=40, pady=25)
 
 
+# =========================
 # BUTTON
+# =========================
 btn_pilih = tk.Button(
     container,
     text="Select File",
@@ -132,7 +178,9 @@ btn_pilih = tk.Button(
 btn_pilih.pack(pady=(0, 20))
 
 
+# =========================
 # FILE INFO CARD
+# =========================
 info_card = tk.Frame(
     container,
     bg="white",
@@ -164,7 +212,9 @@ label_file = tk.Label(
     text="-",
     font=("Segoe UI", 11),
     bg="white",
-    fg="#0F172A"
+    fg="#0F172A",
+    wraplength=850,
+    justify="left"
 )
 label_file.pack(anchor="w", padx=20, pady=(0, 10))
 
@@ -187,7 +237,9 @@ label_ukuran = tk.Label(
 label_ukuran.pack(anchor="w", padx=20, pady=(0, 15))
 
 
+# =========================
 # COMPARISON FRAME
+# =========================
 compare_frame = tk.Frame(container, bg="#F8FAFC")
 compare_frame.pack(fill="both", expand=True)
 
@@ -239,8 +291,7 @@ def buat_hash_card(parent, title):
 
     hash_text = tk.Text(
         frame,
-        height=6,
-        width=45,
+        height=7,
         wrap="word",
         font=("Consolas", 9),
         bg="#F8FAFC",
@@ -260,14 +311,16 @@ label_waktu_sha256, text_sha256 = buat_hash_card(compare_frame, "SHA-256")
 label_waktu_sha3, text_sha3 = buat_hash_card(compare_frame, "SHA3-256")
 
 
+# =========================
 # RESULT CARD
+# =========================
 result_card = tk.Frame(
     container,
     bg="white",
     highlightbackground="#E2E8F0",
     highlightthickness=1
 )
-result_card.pack(fill="x", pady=(20, 0))
+result_card.pack(fill="x", pady=(20, 40))
 
 result_title = tk.Label(
     result_card,
@@ -283,7 +336,9 @@ label_hasil = tk.Label(
     text="Please select a file to start the analysis.",
     font=("Segoe UI", 11),
     bg="white",
-    fg="#64748B"
+    fg="#64748B",
+    wraplength=900,
+    justify="left"
 )
 label_hasil.pack(anchor="w", padx=20, pady=(0, 15))
 
